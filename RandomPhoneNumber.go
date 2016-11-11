@@ -19,7 +19,7 @@ func generatePhoneNumber() string {
 }
 
 //Generates a number, split into area code, prefix, and suffix
-func generatePhoneNumberSplit() (area string, prefix string,suffix string) {
+func generatePhoneNumberSplit() (string,string,string) {
 	var area,pre,suf string
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	i := r.Intn(1)
@@ -53,7 +53,7 @@ func generateUSPhoneNumberSplit() (string, string, string) {
 		suffixString = "000" + suffixString
 	}
 
-	return areacodeString, prefixString, suffixString, areacodeString+prefixString+suffixString
+	return areacodeString, prefixString, suffixString
 }
 
 func generateUSPhoneNumber() string {
@@ -81,11 +81,123 @@ func generateUSPhoneNumber() string {
 }
 
 //UK Number Generation
-func generateUKNumber() {
+func generateUKNumber() string{
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	se1 := r.Intn(19)
 	s := "error"
-	UKAreaCodes := []int {"1","2","3","7","8","9","11","55","56","70","76","500","800","7624","16977","845464"}
+	UKAreaCodes := []string {"1","2","3","7","8","9","11","55","56","70","76","500","800","7624","16977","845464"}
 	s += UKAreaCodes[se1]
 
+	if s == "1" {
+		r = rand.New(rand.NewSource(time.Now().UnixNano()))
+		se1 = r.Intn(2)
+		switch(se1) {
+		case 0:
+			s += generateNdigitnumber(9)
+		case 1:
+			s += generateNdigitnumber(1) + "1" + generateNdigitnumber(7)
+		case 2:
+			s += generateNdigitnumber(8)
+		}
+	}
+
+	if(len(s) == 1 && s != "1") {
+		s += generateNdigitnumber(9)
+	} else if(len(s) == 2) {
+		s += generateNdigitnumber(8)
+	} else if(len(s) == 3) {
+		s += generateNdigitnumber(7)
+	} else if(len(s) == 4) {
+		s += generateNdigitnumber(6)
+	} else if(len(s) == 5) {
+		s += generateNdigitnumber(4)
+	} else if(len(s) == 6) {
+		s += generateNdigitnumber(1)
+	}
+
+	return s
+}
+
+func generateUKNumberSplit() (string,string,string){
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	se1 := r.Intn(19)
+	s := "error"
+	var areac string
+	var prefix string
+	var suffix string
+	UKAreaCodes := []string {"1","2","3","7","8","9","11","55","56","70","76","500","800","7624","16977","845464"}
+	s += UKAreaCodes[se1]
+	areac = s
+	if s == "1" {
+		r = rand.New(rand.NewSource(time.Now().UnixNano()))
+		se1 = r.Intn(2)
+		switch(se1) {
+		case 0:
+			s += generateNdigitnumber(9)
+			prefix = substr(s,1,3)
+		case 1:
+			s += generateNdigitnumber(1) + "1" + generateNdigitnumber(7)
+			//suffix = substr(s,)
+		case 2:
+			s += generateNdigitnumber(8)
+		}
+	}
+
+	if(len(s) == 1 && s != "1") {
+		s += generateNdigitnumber(9)
+	} else if(len(s) == 2) {
+		s += generateNdigitnumber(8)
+	} else if(len(s) == 3) {
+		s += generateNdigitnumber(7)
+	} else if(len(s) == 4) {
+		s += generateNdigitnumber(6)
+	} else if(len(s) == 5) {
+		s += generateNdigitnumber(4)
+	} else if(len(s) == 6) {
+		s += generateNdigitnumber(1)
+	}
+
+	return areac, prefix, suffix
+}
+
+func stuff() string {
+	return substr("hello world",1,3)
+}
+
+//For general usage
+func generateNdigitnumber(n int) string {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	var s string = "-1"
+	switch(n) {
+	case 1:
+		s = strconv.Itoa(r.Intn(9))
+	case 2:
+		s = strconv.Itoa(r.Intn(((99 - 10) + 1) + 10))
+	case 3:
+		s = strconv.Itoa(r.Intn(((999 - 100) + 1) + 1000))
+	case 4:
+		s = strconv.Itoa(r.Intn(((9999 - 1000) + 1) + 10000))
+	case 5:
+		s = strconv.Itoa(r.Intn(((99999 - 10000) + 1) + 100000))
+	case 6:
+		s = strconv.Itoa(r.Intn(((999999 - 100000) + 1) + 1000000))
+	case 7:
+		s = strconv.Itoa(r.Intn(((9999999 - 1000000) + 1) + 10000000))
+	case 8:
+		s = strconv.Itoa(r.Intn(((99999999 - 10000000) + 1) + 100000000))
+	case 9:
+		s = strconv.Itoa(r.Intn(((999999999 - 100000000) + 1) + 1000000000))
+	default:
+		s = "error"
+	}
+	return s
+}
+
+func substr(s string,pos,length int) string{
+	runes:=[]rune(s)
+	l := pos+length
+	if l > len(runes) {
+		l = len(runes)
+	}
+	return string(runes[pos:l])
 }
