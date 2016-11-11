@@ -79,3 +79,13 @@ func generateUSPhoneNumber() string {
 
 	return areacodeString+prefixString+suffixString
 }
+
+//UK Number Generation
+func generateUKNumber() {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	se1 := r.Intn(19)
+	s := "error"
+	UKAreaCodes := []int {"1","2","3","7","8","9","11","55","56","70","76","500","800","7624","16977","845464"}
+	s += UKAreaCodes[se1]
+
+}
